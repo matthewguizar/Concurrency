@@ -15,7 +15,7 @@ public class Main {
         
         try {
             //first task takes too long and ruins user experience
-            //created threads for each task
+            //created threads for each task to run in the background
             Path path = Paths.get(Thread.currentThread().getContextClassLoader().getResource(SALES).toURI());
             Thread thread2 = new Thread(() -> average(path, "Furniture"));
             Thread thread3 = new Thread(() -> average(path, "Technology"));
