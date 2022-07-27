@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 
 public class Main {
@@ -20,10 +21,10 @@ public class Main {
             //created threads for each task to run in the background
             Path path = Paths.get(Thread.currentThread().getContextClassLoader().getResource(SALES).toURI());
             ExecutorService executor = Executors.newFixedThreadPool(4);
-            executor.submit(() ->average(path, "Furniture"));
-            executor.submit(() ->average(path, "Technology"));
-            executor.submit(() ->average(path, "Office Supplies"));
-            executor.submit(() ->totalAverage(path));
+            Future<Double> future = executor.submit(() ->average(path, "Furniture"));
+            Future<Double> future2 = executor.submit(() ->average(path, "Technology"));
+            Future<Double> future3 = executor.submit(() ->average(path, "Office Supplies"));
+            Future<Double> future4 = executor.submit(() ->totalAverage(path));
             
             
             Scanner scan = new Scanner(System.in);
