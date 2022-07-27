@@ -22,6 +22,10 @@ public class Main {
             Thread thread4 = new Thread(() -> average(path, "Office Supplies"));
             Thread thread5 = new Thread(() -> totalAverage(path));
             
+            thread2.start();
+            thread3.start();
+            thread4.start();
+            thread5.start();
             
             Scanner scan = new Scanner(System.in);
             System.out.println("Please Enter your name to access");
