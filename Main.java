@@ -16,9 +16,10 @@ public class Main {
 
     public static void main(String[] args) {
         
-        try {
+        
             //first task takes too long and ruins user experience
             //created threads for each task to run in the background
+            try {
             Path path = Paths.get(Thread.currentThread().getContextClassLoader().getResource(SALES).toURI());
             ExecutorService executor = Executors.newFixedThreadPool(4);
             Future<Double> future = executor.submit(() ->average(path, "Furniture"));
@@ -26,14 +27,12 @@ public class Main {
             Future<Double> future3 = executor.submit(() ->average(path, "Office Supplies"));
             Future<Double> future4 = executor.submit(() ->totalAverage(path));
             
-            
-            Scanner scan = new Scanner(System.in);
-            System.out.println("Please Enter your name to access");
-            String name = scan.nextLine();
-            System.out.println("Access Denied.");
-            scan.close();
-
-        } catch (URISyntaxException e) {
+        
+            future.get();
+            future2.get();
+            future3.get();
+            executor.shutdown();
+        }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
