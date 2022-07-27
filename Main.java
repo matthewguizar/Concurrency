@@ -15,12 +15,14 @@ public class Main {
         
         try {
             //first task takes too long and ruins user experience
+            //created threads for each task
             Path path = Paths.get(Thread.currentThread().getContextClassLoader().getResource(SALES).toURI());
-            average(path, "Furniture");
-            average(path, "Technology");
-            average(path, "Office Supplies");
-            totalAverage(path);
-
+            Thread thread2 = new Thread(() -> average(path, "Furniture"));
+            Thread thread3 = new Thread(() -> average(path, "Technology"));
+            Thread thread4 = new Thread(() -> average(path, "Office Supplies"));
+            Thread thread5 = new Thread(() -> totalAverage(path));
+            
+            
             Scanner scan = new Scanner(System.in);
             System.out.println("Please Enter your name to access");
             String name = scan.nextLine();
