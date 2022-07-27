@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) {
         
         try {
+            //first task takes too long and ruins user experience
             Path path = Paths.get(Thread.currentThread().getContextClassLoader().getResource(SALES).toURI());
             average(path, "Furniture");
             average(path, "Technology");
@@ -22,6 +23,9 @@ public class Main {
 
             Scanner scan = new Scanner(System.in);
             System.out.println("Please Enter your name to access");
+            String name = scan.nextLine();
+            System.out.println("Access Denied.");
+            scan.close();
 
         } catch (URISyntaxException e) {
             System.out.println(e.getMessage());
