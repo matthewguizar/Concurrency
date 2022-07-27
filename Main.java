@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class Main {
@@ -17,15 +19,12 @@ public class Main {
             //first task takes too long and ruins user experience
             //created threads for each task to run in the background
             Path path = Paths.get(Thread.currentThread().getContextClassLoader().getResource(SALES).toURI());
-            Thread thread2 = new Thread(() -> average(path, "Furniture"));
-            Thread thread3 = new Thread(() -> average(path, "Technology"));
-            Thread thread4 = new Thread(() -> average(path, "Office Supplies"));
-            Thread thread5 = new Thread(() -> totalAverage(path));
+            ExecutorService executor = Executors.newFixedThreadPool(4);
+            executor.submit(() ->average(path, "Furniture"));
+            executor.submit(() ->average(path, "Technology"));
+            executor.submit(() ->average(path, "Office Supplies"));
+            executor.submit(() ->totalAverage(path));
             
-            thread2.start();
-            thread3.start();
-            thread4.start();
-            thread5.start();
             
             Scanner scan = new Scanner(System.in);
             System.out.println("Please Enter your name to access");
