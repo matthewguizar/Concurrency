@@ -4,6 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 
@@ -23,27 +26,37 @@ public class Main {
             //created threads for each task to run in the background
             try {
                 Path path = Paths.get(Thread.currentThread().getContextClassLoader().getResource(SALES).toURI());
-                FutureTask<Double> future = new FutureTask<>(() -> average(path, "Furniture"));
-                Thread thread2 = new Thread((future));
 
-                FutureTask<Double> future2 = new FutureTask<>(() -> average(path, "Technology"));
-                Thread thread3 = new Thread((future2));
+                int threads = Runtime.getRuntime().availableProcessors();
 
-                FutureTask<Double> future3 = new FutureTask<>(() -> average(path, "Office Supplies"));
-                Thread thread4 = new Thread((future3));
+                ExecutorService executor = Executors.newFixedThreadPool(threads);
 
-                FutureTask<Double> future4 = new FutureTask<>(() -> totalAverage(path));
-                Thread thread5 = new Thread((future4));
+                Future<Double> future = executor.submit(() -> average(path, "Furniture"));
+                Future<Double> future2 = executor.submit(() -> average(path, "Technology"));
+                Future<Double> future3 = executor.submit(() -> average(path, "Office Supplies"));
+                Future<Double> future4 = executor.submit(() -> totalAverage(path));
+
+                // FutureTask<Double> future = new FutureTask<>(() -> average(path, "Furniture")); //replaced by future object
+                // Thread thread2 = new Thread((future));
+
+                // FutureTask<Double> future2 = new FutureTask<>(() -> average(path, "Technology")); //replaced by future object
+                // Thread thread3 = new Thread((future2));
+
+                // FutureTask<Double> future3 = new FutureTask<>(() -> average(path, "Office Supplies")); //replaced by future object
+                // Thread thread4 = new Thread((future3));
+
+            // FutureTask<Double> future4 = new FutureTask<>(() -> totalAverage(path)); //replaced by future object
+                // Thread thread5 = new Thread((future4));
                 
                 // without future task.
                 // Thread thread3 = new Thread(() -> technology = average(path, "Technology"));
                 // Thread thread4 = new Thread(() -> supplies = average(path, "Office Supplies"));
                 // Thread thread5 = new Thread(() -> average = totalAverage(path));
                 
-                thread2.start();
-                thread3.start();
-                thread4.start();
-                thread5.start();
+                // thread2.start();
+                // thread3.start();
+                // thread4.start();
+                // thread5.start();
      
      
                 Scanner scan = new Scanner(System.in);
@@ -54,6 +67,7 @@ public class Main {
                     technology = future2.get();
                     supplies = future3.get();
                     average = future4.get();
+                    executor.shutdown();
                     // thread2.join();
                     // thread3.join();
                     // thread4.join();
